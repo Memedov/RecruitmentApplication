@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{resources/fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="bg"></div>
+<main layout:fragment="content">
+
+    <section>
+        <h1>Login Form</h1>
+        <p class="info">Please select currency details</p><br>
+        <form method="post" th:action="@{http://localhost:8080/login}" th:object="${loginForm}">
+            Username:<br>
+            <input type="text" th:field="*{username}">
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
+            <br><br>
+            Password:<br>
+            <input type="password" th:field="*{password}">
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+            <br><br>
+            <input type="submit" value="Login">
+            <a href="/register">If you don't have an account, please create one.</a>
+        </form>
+    </section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:fragment="header">
+    <figure id="logo">
+        <a th:href="@{/}"><img th:src="@{resources/fragments/header-imgs/ferris.png}" alt="amusement park logo"/></a>
+    </figure>
+    <p>The Amusement Park</p>
+</header>
+</body>
+</html>

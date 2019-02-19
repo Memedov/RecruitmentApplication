@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{resources/fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="bg"></div>
+<main layout:fragment="content">
+
+    <section>
+        <h1>Registration Form</h1>
+        <p class="info">Please create an account to apply for our job openings</p><br>
+        <form method="post" th:action="@{http://localhost:8080/register}" th:object="${registerForm}">
+            First name:<br>
+            <input type="text" th:field="*{fname}">
+            <p th:if="${#fields.hasErrors('fname')}" th:errors="*{fname}">Fname Error</p>
+            <br><br>
+            Last name:<br>
+            <input type="text" th:field="*{lname}">
+            <p th:if="${#fields.hasErrors('lname')}" th:errors="*{lname}">Lname Error</p>
+            <br><br>
+            Email:<br>
+            <input type="email" th:field="*{email}">
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
+            <br><br>
+            Social security number:<br>
+            <input type="text" th:field="*{ssn}" th:placeholder="YYMMDDXXXX">
+            <p th:if="${#fields.hasErrors('ssn')}" th:errors="*{ssn}">Social Security Number Error</p>
+            </br><br>
+            Username:<br>
+            <input type="text" th:field="*{username}">
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
+            <br><br>
+            Password:<br>
+            <input type="password" th:field="*{password}">
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+            <br><br>
+            Confirm password:<br>
+            <input type="password" th:field="*{confirmPwd}">
+            <p th:if="${#fields.hasErrors('confirmPwd')}" th:errors="*{confirmPwd}">Confirm Password Error</p>
+            <br><br>
+            <input type="submit" value="Register">
+            <br><br>
+            <p>Already have an account? <a href="/login">Please log in</a></p>
+        </form>
+    </section>
+
+</main>
+</body>
+</html>
