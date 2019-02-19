@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{resources/fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="bg"></div>
+<main layout:fragment="content">
+
+    <section>
+        <h1 class="form" th:object="${loginForm}">
+            Welcome to the Amusement Parks recruiting site, <b th:text="*{username}">Missing</b>!
+        </h1>
+        <p class="info">We are a great company and we want to work with great people like you :) </p><br>
+        <p>If you would like to apply to work with us this upcoming season, please apply!</p>
+        <br><br>
+        <input type="submit" value="Apply">
+
+    </section>
+
+</main>
+</body>
+</html>
