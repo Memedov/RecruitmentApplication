@@ -17,7 +17,7 @@ import recruitment.application.RecruiterService;
 @Controller
 @Scope("session")
 public class RecruiterController {
-    static final String DEFAULT_PAGE_URL = "https://recruitingapplication.herokuapp.com/";
+    static final String DEFAULT_PAGE_URL = "/";
     static final String REGISTER_PAGE_URL = "register";
     static final String LOGIN_PAGE_URL = "login";
     static final String APPLY_PAGE_URL = "apply";
