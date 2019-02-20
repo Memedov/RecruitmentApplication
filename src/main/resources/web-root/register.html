@@ -26,7 +26,7 @@
             <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
             <br><br>
             Social security number:<br>
-            <input type="text" th:field="*{ssn}" th:placeholder="YYMMDDXXXX">
+            <input type="text" th:field="*{ssn}" th:placeholder="YYYYMMDD-XXXX">
             <p th:if="${#fields.hasErrors('ssn')}" th:errors="*{ssn}">Social Security Number Error</p>
             </br><br>
             Username:<br>

@@ -1,6 +1,7 @@
 package recruitment.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>This class represents the different competences a person can have.</p>
@@ -13,10 +14,10 @@ public class Competence {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME_KEY)
     @SequenceGenerator(name = SEQUENCE_NAME_KEY, sequenceName = "COMPETENCE_SEQUENCE")
-
     @Column(name = "COMPETENCE_ID")
     private int competenceId;
 
+    @NotNull
     @Column(name = "NAME")
     private String name;
 

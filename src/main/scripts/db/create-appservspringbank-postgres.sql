@@ -17,7 +17,7 @@ CREATE TABLE ROLE (
 -- Create for table `PERSON`
 --
 CREATE TABLE PERSON (
-                      person_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                      person_id BIGINT,
                       name VARCHAR(255) NOT NULL,
                       surname VARCHAR(255) NOT NULL,
                       ssn VARCHAR(255),

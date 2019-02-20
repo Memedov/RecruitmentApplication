@@ -1,6 +1,8 @@
 package recruitment.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 /**
@@ -14,16 +16,19 @@ public class CompetenceProfile{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME_KEY)
     @SequenceGenerator(name = SEQUENCE_NAME_KEY, sequenceName = "COMPETENCE_PROFILE_SEQUENCE")
-
     @Column(name = "COMPETENCE_PROFILE_ID")
     private int competenceProId;
 
+    @NotNull
     @Column(name = "PERSON_ID")
     private int pid;
 
+    @NotNull
     @Column(name = "COMPETENCE_ID")
     private int competenceId;
 
+    @NotNull
+    @PositiveOrZero
     @Column(name = "YEARS_OF_EXPERIENCE")
     private BigDecimal experience;
 
