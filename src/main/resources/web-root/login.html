@@ -12,7 +12,7 @@
     <section>
         <h1>Login Form</h1>
         <p class="info">Please select currency details</p><br>
-        <form method="post" th:action="@{https://recruitingapplication.herokuapp.com/login}" th:object="${loginForm}">
+        <form method="post" th:action="@{http://localhost:8080/login}" th:object="${loginForm}">
             Username:<br>
             <input type="text" th:field="*{username}">
             <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>

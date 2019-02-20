@@ -10,8 +10,8 @@
 <main layout:fragment="content">
 
     <section>
-        <h1 class="form" th:object="${loginForm}">
-            Welcome to internal recruiting platform of the Amusement Park, <b th:text="*{username}">Missing</b>!
+        <h1>
+            Welcome to internal recruiting platform of the Amusement Park, <b><span th:text="${username}"></span></b>!
         </h1>
         <p class="info">Below are the applications</p><br>
         <p>Application 1</p>

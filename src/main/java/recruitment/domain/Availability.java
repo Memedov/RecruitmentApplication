@@ -3,6 +3,9 @@ package recruitment.domain;
 import javax.persistence.*;
 import java.sql.*;
 
+/**
+ * <p>This class represents availabilities connected to specified persons.</p>
+ */
 @Entity
 @Table(name = "AVAILABILITY")
 public class Availability{
@@ -24,6 +27,14 @@ public class Availability{
     @Column(name = "TO_DATE")
     private Date toDate;
 
+    /**
+     * Creates a new instance of an availability for a certain person.
+     *
+     * @param availabilityId The id of the instance.
+     * @param pid The id of the person relating to the specified instance.
+     * @param fromDate The start date of the specified instance.
+     * @param toDate The end date of the specified instance.
+     */
     public Availability(int availabilityId, int pid, Date fromDate, Date toDate) {
         this.availabilityId = availabilityId;
         this.pid = pid;

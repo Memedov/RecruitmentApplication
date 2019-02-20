@@ -15,18 +15,32 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
-
+/**
+ * <p>Loads basic configurations for the entire recruitment application.</p>
+ */
 @EnableTransactionManagement
 @EnableWebMvc
 @Configuration
 public class RecruitmentApplicationConfig implements WebMvcConfigurer, ApplicationContextAware {
     private ApplicationContext applicationContext;
 
+    /**
+     * Sets context for the application.
+     *
+     * @param applicationContext The application-context user by the application.
+     */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
+    /**
+     * Create a <code>org.springframework.web.servlet .ViewResolver</code> bean
+     * that delegates all views to thymeleaf's template engine. There is no need
+     * to specify view name patterns since it will be the only existing view resolver.
+     *
+     * @return The viewResolver.
+     */
     @Bean
     public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
@@ -36,6 +50,13 @@ public class RecruitmentApplicationConfig implements WebMvcConfigurer, Applicati
         return viewResolver;
     }
 
+    /**
+     * Create a <code>org.thymeleaf.ITemplateEngine</code> bean that manages
+     * thymeleaf template integration with Spring. All template resolution will
+     * be delegated to the specified template resolver.
+     *
+     * @return The templateEngine.
+     */
     @Bean(name = "recruitmentApplicationTemplateEngine")
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -45,6 +66,13 @@ public class RecruitmentApplicationConfig implements WebMvcConfigurer, Applicati
         return templateEngine;
     }
 
+    /**
+     * Create a <code>org.thymeleaf.templateresolver.ITemplateResolver</code>
+     * that can handle thymeleaf template integration with Spring. This will be
+     * the only existing template resolver.
+     *
+     * @return The templateResolver.
+     */
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver =
@@ -57,6 +85,10 @@ public class RecruitmentApplicationConfig implements WebMvcConfigurer, Applicati
         return templateResolver;
     }
 
+    /**
+     * Configuration of requests for static resources based on the specified URL path patterns.
+     *
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         int cachePeriodForStaticFilesInSecs = 1;

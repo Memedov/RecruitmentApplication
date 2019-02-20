@@ -7,6 +7,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
+/**
+ * A form bean for the register form.
+ */
 class RegisterForm {
 
     @NotEmpty
@@ -38,11 +41,6 @@ class RegisterForm {
     @NotEmpty
     @NotBlank(message = "Please confirm your password.")
     private String confirmPwd;
-
-    private String from;
-    private String to;
-    private String conversionResult;
-    private int totalCount;
 
     public String getFname() { return fname; }
 

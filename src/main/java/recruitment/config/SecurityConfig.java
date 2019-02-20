@@ -6,11 +6,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import recruitment.application.RecruiterService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * <p>Loads all security configurations for the recruitment application.</p>
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -18,13 +20,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     RecruiterService userDetailsService;
 
+    /**
+     * Spring utilizes this method to set the userDetailsService and password encoder to the
+     * authentication manager builder to the database.
+     * @param auth
+     * @throws Exception
+     */
     @Autowired
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        /*auth.inMemoryAuthentication()
-                .withUser("user1").password("{noop}user1").roles("USER");*/
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * Configuration of rules for different HTTP requests.
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
@@ -50,6 +61,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutSuccessHandler())*/;
     }
 
+    /**
+     * Bean to encode passwords through BCrypt in the application.
+     * @return The password encoder.
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

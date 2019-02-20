@@ -4,6 +4,9 @@ import recruitment.util.Util;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
+/**
+ * A form bean for the login form.
+ */
 class LoginForm {
 
     @NotEmpty

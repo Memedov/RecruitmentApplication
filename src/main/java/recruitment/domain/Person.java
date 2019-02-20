@@ -2,6 +2,9 @@ package recruitment.domain;
 
 import javax.persistence.*;
 
+/**
+ * Represent a person, or user, in the application.
+ */
 @Entity
 @Table(name = "PERSON")
 public class Person implements PersonDTO {
@@ -35,7 +38,18 @@ public class Person implements PersonDTO {
     @Column(name = "ROLE_ID")
     private int roleId;
 
-
+    /**
+     * Creates an instance of an person specified by given parameters.
+     *
+     * @param personId The instance identifier.
+     * @param name First name of the person.
+     * @param surname Last name of the person.
+     * @param ssn The social security number.
+     * @param email The email address.
+     * @param username The username.
+     * @param password The password.
+     * @param roleId The role identifier.
+     */
     public Person(int personId, String name, String surname, String ssn, String email,
                   String username, String password, int roleId) {
         this.personId = personId;
