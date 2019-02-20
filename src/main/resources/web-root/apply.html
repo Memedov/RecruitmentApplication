@@ -10,8 +10,8 @@
 <main layout:fragment="content">
 
     <section>
-        <h1 class="form" th:object="${loginForm}">
-            Welcome to the Amusement Parks recruiting site, <b th:text="*{username}">Missing</b>!
+        <h1>
+            Welcome to the Amusement Parks recruiting site, <b><span th:text="${username}"></span></b>!
         </h1>
         <p class="info">We are a great company and we want to work with great people like you :) </p><br>
         <p>If you would like to apply to work with us this upcoming season, please apply!</p>

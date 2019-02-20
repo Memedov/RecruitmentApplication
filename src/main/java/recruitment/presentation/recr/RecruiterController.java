@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 
 import recruitment.application.RecruiterService;
-//import recruitment.domain.PersonDTO;
+import recruitment.domain.PersonDTO;
 
 
 @Controller
@@ -34,7 +34,7 @@ public class RecruiterController {
 
     @GetMapping(DEFAULT_PAGE_URL)
     public String showDefaultView() {
-        return "redirect:" + REGISTER_PAGE_URL;
+        return "redirect:" + LOGIN_PAGE_URL;
     }
 
     @GetMapping("/" + REGISTER_PAGE_URL)
@@ -53,12 +53,22 @@ public class RecruiterController {
     }
 
     @GetMapping("/" + APPLY_PAGE_URL)
-    public String showApplyPageView(LoginForm loginForm) {
+    public String showApplyPageView(Model model) {
+        PersonDTO person = service.getAuthenticatedUsername();
+        if(person == null){
+            return LOGIN_PAGE_URL;
+        }
+        model.addAttribute("username", person.getName());
         return APPLY_PAGE_URL;
     }
 
     @GetMapping("/" + LIST_APPLICATIONS_PAGE_URL)
-    public String showListApplicationsPageView(LoginForm loginForm) {
+    public String showListApplicationsPageView(Model model) {
+        PersonDTO person = service.getAuthenticatedUsername();
+        if(person == null){
+            return LOGIN_PAGE_URL;
+        }
+        model.addAttribute("username", person.getName());
         return LIST_APPLICATIONS_PAGE_URL;
     }
 
@@ -139,6 +149,7 @@ public class RecruiterController {
 //            return ExceptionHandlers.ERROR_PAGE_URL;
         //}
         return LOGIN_PAGE_URL;
+        //return showLoginPage(model, loginForm);
     }
 
 }

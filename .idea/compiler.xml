@@ -15,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="RecruitmentApp-Park" options="-parameters" />
+      <module name="RecruitmentApp-Park" options="" />
     </option>
   </component>
 </project>

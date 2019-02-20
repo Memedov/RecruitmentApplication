@@ -1,5 +1,8 @@
 package recruitment.application;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import recruitment.domain.Person;
 import org.springframework.security.core.userdetails.User;
+import recruitment.domain.PersonDTO;
 import recruitment.repository.RecruiterRepository;
 import recruitment.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +78,13 @@ public class RecruiterService implements UserDetailsService {
         grantedAuthoritySet.add(new SimpleGrantedAuthority(roleName));
 
         return new User(person.getName(),person.getPassword(),grantedAuthoritySet);
+    }
+
+    public PersonDTO getAuthenticatedUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            return personRepo.findByUsername(authentication.getName());
+        }
+        return null;
     }
 }
