@@ -22,7 +22,7 @@ public interface RecruiterRepository extends JpaRepository<Role, String> {
      * @param id The identifier.
      * @return The name of the role.
      */
-    @Query(value = "SELECT NAME FROM PERSON WHERE ROLE_ID = 1)", nativeQuery = true)
+    @Query(value = "SELECT NAME FROM PERSON WHERE ROLE_ID = 1", nativeQuery = true)
     String findRoleById(int id);
 
     /**
