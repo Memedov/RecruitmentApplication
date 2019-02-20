@@ -2,9 +2,9 @@
 Project for IV1201, KTH.
 
 Project members:
-* Nathalie Hedin
-* Ramiz Memedov
-* Yuchen Che
+* [Yuchen Che](https://github.com/YuchenC)
+* [Nathalie Hedin](https://github.com/nhedi)
+* [Ramiz Memedov](https://github.com/memedov)
 
 ## Tools
 The following software development tools are used.
