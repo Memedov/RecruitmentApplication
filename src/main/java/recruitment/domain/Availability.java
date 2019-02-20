@@ -1,6 +1,11 @@
 package recruitment.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import java.sql.*;
 
 /**
@@ -14,16 +19,22 @@ public class Availability{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME_KEY)
     @SequenceGenerator(name = SEQUENCE_NAME_KEY, sequenceName = "AVAILABILITY_SEQUENCE")
-
     @Column(name = "AVAILABILITY_ID")
     private int availabilityId;
 
+    @NotNull
     @Column(name = "PERSON_ID")
     private int pid;
 
+    @NotNull
+    @FutureOrPresent
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     @Column(name = "FROM_DATE")
     private Date fromDate;
 
+    @NotNull
+    @Future
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     @Column(name = "TO_DATE")
     private Date toDate;
 
