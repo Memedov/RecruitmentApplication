@@ -3,6 +3,9 @@ package recruitment.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+/**
+ * Creates a profile based a persons competences.
+ */
 @Entity
 @Table(name = "COMPETENCE_PROFILE")
 public class CompetenceProfile{
@@ -24,6 +27,14 @@ public class CompetenceProfile{
     @Column(name = "YEARS_OF_EXPERIENCE")
     private BigDecimal experience;
 
+    /**
+     * Creates an instance of a competence profile based on given parameters.
+     *
+     * @param competenceProId The identifier.
+     * @param pid The person identifier.
+     * @param competenceId The competence identifier.
+     * @param experience Years of experience.
+     */
     public CompetenceProfile(int competenceProId, int pid, int competenceId, BigDecimal experience) {
         this.competenceProId = competenceProId;
         this.pid = pid;

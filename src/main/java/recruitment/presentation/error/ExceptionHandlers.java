@@ -14,7 +14,9 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+/**
+ * Contains all exception-handling methods.
+ */
 @Controller
 @ControllerAdvice
 public class ExceptionHandlers implements ErrorController {
@@ -31,7 +33,11 @@ public class ExceptionHandlers implements ErrorController {
     public static final String HTTP_404_INFO = "Sorry, but there is no such page. We would like to fix this error, please tell us what you where trying to do.";
     static final String ERROR_PATH = "failure";
 
-
+    /**
+     * Exception handler for broken business rules.
+     *
+     * @return An appropriate error page.
+     */
     @ExceptionHandler(IllegalRegisterException.class)
     @ResponseStatus(HttpStatus.OK)
     public String handleException(IllegalRegisterException exception, Model model) {
@@ -40,6 +46,12 @@ public class ExceptionHandlers implements ErrorController {
         return ERROR_PAGE_URL;
     }
 
+    /**
+     * The most generic exception handler, will be used if there is not a more specific
+     * handler the exception that is to be handled.
+     *
+     * @return The generic error page.
+     */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleException(Exception exception, Model model) {
@@ -47,6 +59,11 @@ public class ExceptionHandlers implements ErrorController {
         return ERROR_PAGE_URL;
     }
 
+    /**
+     * Handles http-related errors.
+     *
+     * @return The error page.
+     */
     @GetMapping("/" + ERROR_PATH)
     public String handleHttpError(HttpServletRequest request, HttpServletResponse response, Model model) {
         int statusCode = Integer.parseInt(extractHttpStatusCode(request));

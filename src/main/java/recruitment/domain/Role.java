@@ -2,6 +2,10 @@ package recruitment.domain;
 
 import javax.persistence.*;
 
+/**
+ * <p>This class represents the different roles a person
+ * can have in the application.</p>
+ */
 @Entity
 @Table(name = "ROLE")
 public class Role{
@@ -17,6 +21,12 @@ public class Role{
     @Column(name = "NAME")
     private String name;
 
+    /**
+     * Creates an instance of a role, based on given parameters.
+     *
+     * @param roleId The identifier of the role.
+     * @param name The name of the role.
+     */
     public Role(int roleId, String name) {
         this.roleId = roleId;
         this.name = name;
@@ -26,4 +36,3 @@ public class Role{
 
     }
 }
-
