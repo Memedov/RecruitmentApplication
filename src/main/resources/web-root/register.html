@@ -12,7 +12,7 @@
     <section>
         <h1>Registration Form</h1>
         <p class="info">Please create an account to apply for our job openings</p><br>
-        <form method="post" th:action="@{http://localhost:8080/register}" th:object="${registerForm}">
+        <form method="post" th:action="@{/register}" th:object="${registerForm}">
             First name:<br>
             <input type="text" th:field="*{fname}">
             <p th:if="${#fields.hasErrors('fname')}" th:errors="*{fname}">Fname Error</p>

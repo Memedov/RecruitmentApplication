@@ -40,9 +40,7 @@ public class RecruiterController {
      * @return A response that redirects the browser to the login page.
      */
     @GetMapping(DEFAULT_PAGE_URL)
-    public String showDefaultView() {
-        return "redirect:" + LOGIN_PAGE_URL;
-    }
+    public String showDefaultView() { return "redirect:" + LOGIN_PAGE_URL; }
 
     /**
      * A GET request for the registration page.
@@ -51,25 +49,16 @@ public class RecruiterController {
      * @return The registration page.
      */
     @GetMapping("/" + REGISTER_PAGE_URL)
-    public String showRegisterPageView(RegisterForm registerForm) {
-        return REGISTER_PAGE_URL;
-    }
+    public String showRegisterPageView(RegisterForm registerForm) { return REGISTER_PAGE_URL; }
 
     /**
      * A GET request for the login page.
      *
-     * @param model Model objects used by the login page.
+     * @param loginForm Content of the login form.
      * @return The login page.
      */
     @GetMapping("/" + LOGIN_PAGE_URL)
-    public String showLoginPageView(Model model) { return showLoginPage(model, new LoginForm()); }
-
-    private String showLoginPage(Model model, LoginForm loginForm) {
-        if(loginForm != null) {
-            model.addAttribute(LOGIN_FORM_OBJ_NAME, loginForm);
-        }
-        return LOGIN_PAGE_URL;
-    }
+    public String showLoginPageView(LoginForm loginForm) { return LOGIN_PAGE_URL; }
 
     /**
      * A GET request for the apply page.
@@ -122,7 +111,7 @@ public class RecruiterController {
                 LoginForm loginForm = new LoginForm();
                 loginForm.setUsername(registerForm.getUsername());
 
-                return showLoginPage(model, loginForm);
+                return showLoginPageView(loginForm);
             }
 
         } else {
@@ -180,7 +169,7 @@ public class RecruiterController {
             model.addAttribute(ExceptionHandlers.ERROR_INFO_KEY, ExceptionHandlers.NO_CONVERSION_FOUND_FOR_UPDATE_INFO);
             return ExceptionHandlers.ERROR_PAGE_URL;
         }*/
-
+        System.out.println("post mapping login url");
         return LOGIN_PAGE_URL;
         //return showLoginPage(model, loginForm);
     }
