@@ -2,6 +2,7 @@ package recruitment.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,7 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
-        System.out.println("securityconfig authentication succ");
             return new MySimpleUrlAuthenticationSuccessHandler();
     }
 
@@ -65,22 +65,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/login*").permitAll()
                 .antMatchers("/register*").permitAll()
-                // /*
                 .antMatchers("/apply*").hasAuthority("applicant")
                 .antMatchers("/list-applications*").hasAuthority("recruiter")
-                //  */
-                /*
-                .antMatchers("/list-applications*").not().hasAuthority("applicant")
-                .antMatchers("/apply*").not().hasAuthority("recruiter")
-                */
                 .anyRequest().authenticated()
                 .and()
+
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
                 .and()
+
                 .formLogin()
                 .loginPage("/login")
-                .successHandler(myAuthenticationSuccessHandler())
-                .failureUrl("/login");
+                .successHandler(myAuthenticationSuccessHandler());
     }
 
     /**
