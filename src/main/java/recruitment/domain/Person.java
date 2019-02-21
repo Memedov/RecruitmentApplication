@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.persistence.OneToMany;
 
 /**
  * Represent a person, or user, in the application.
@@ -47,6 +48,9 @@ public class Person implements PersonDTO {
     @Column(name = "ROLE_ID")
     private int roleId;
 
+    @OneToMany
+    private Role role;
+
     /**
      * Creates an instance of an person specified by given parameters.
      *
@@ -71,6 +75,8 @@ public class Person implements PersonDTO {
 
     protected Person() {
     }
+
+    public void setRole(Role role) {this.role = role;}
 
     @Override
     public int getRole() {

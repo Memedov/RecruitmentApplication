@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
+import javax.persistence.OneToMany;
 
 /**
  * Creates a profile based a persons competences.
@@ -31,6 +32,19 @@ public class CompetenceProfile{
     @PositiveOrZero
     @Column(name = "YEARS_OF_EXPERIENCE")
     private BigDecimal experience;
+
+    @OneToMany
+    private Person person;
+
+    public void setPerson(Person person){ this.person = person;}
+    public Person getPerson() {return person;}
+
+    @OneToMany
+    private CompetenceProfile cp;
+
+    public void setCP(CompetenceProfile cp){ this.cp = cp;}
+    public CompetenceProfile getCP() {return cp;}
+
 
     /**
      * Creates an instance of a competence profile based on given parameters.
