@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import recruitment.application.RecruiterService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,6 +46,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             return new MySimpleUrlAuthenticationSuccessHandler();
     }
 
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new CustomAccessDeniedHandler();
+    }
+
     /**
      * Configuration of rules for different HTTP requests.
      * @param http
@@ -59,11 +65,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/login*").permitAll()
                 .antMatchers("/register*").permitAll()
+                // /*
                 .antMatchers("/apply*").hasAuthority("applicant")
                 .antMatchers("/list-applications*").hasAuthority("recruiter")
-                /*.antMatchers("/list-applications*").not().hasAuthority("applicant")
-                .antMatchers("/apply*").not().hasAuthority("recruiter") */
+                //  */
+                /*
+                .antMatchers("/list-applications*").not().hasAuthority("applicant")
+                .antMatchers("/apply*").not().hasAuthority("recruiter")
+                */
                 .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
                 .and()
                 .formLogin()
                 .loginPage("/login")
