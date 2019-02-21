@@ -53,13 +53,18 @@ public class RecruiterController {
 
     /**
      * A GET request for the login page.
-     *
-     * @param loginForm Content of the login form.
+     * @param model Model objects used by the login page.
      * @return The login page.
      */
     @GetMapping("/" + LOGIN_PAGE_URL)
-    public String showLoginPageView(LoginForm loginForm) { return LOGIN_PAGE_URL; }
+    public String showLoginPageView(Model model) { return showLoginPage(model, new LoginForm()); }
 
+    private String showLoginPage(Model model, LoginForm loginForm) {
+        if(loginForm != null) {
+            model.addAttribute(LOGIN_FORM_OBJ_NAME, loginForm);
+        }
+        return LOGIN_PAGE_URL;
+    }
     /**
      * A GET request for the apply page.
      *
@@ -111,7 +116,7 @@ public class RecruiterController {
                 LoginForm loginForm = new LoginForm();
                 loginForm.setUsername(registerForm.getUsername());
 
-                return showLoginPageView(loginForm);
+                return showLoginPage(model, loginForm);
             }
 
         } else {
