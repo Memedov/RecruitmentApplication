@@ -100,7 +100,7 @@ public class RecruiterService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Person person = personRepo.findByUsername(username);
+        Person person = personRepo.getPersonByUsername(username);
         int roleId = person.getRole();
         String roleName = recruiterRepo.findRoleById(roleId);
 
@@ -118,7 +118,7 @@ public class RecruiterService implements UserDetailsService {
     public PersonDTO getAuthenticatedUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            return personRepo.findByUsername(authentication.getName());
+            return personRepo.getPersonByUsername(authentication.getName());
         }
         return null;
     }
