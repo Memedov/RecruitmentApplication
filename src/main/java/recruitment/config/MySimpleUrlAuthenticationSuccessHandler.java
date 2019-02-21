@@ -35,26 +35,26 @@ public class MySimpleUrlAuthenticationSuccessHandler
 
     protected String determineTargetUrl(Authentication authentication) {
         boolean isRecruiter = false;
-        boolean isApplicant = false;
+        isRecruiter = isRecruiter(isRecruiter, authentication);
+        if (isRecruiter) {
+            return "/list-applications";
+        } else if (!isRecruiter) {
+            return "/apply";
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public static boolean isRecruiter(boolean isRecruiter, Authentication authentication){
         Collection<? extends GrantedAuthority> authorities
                 = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals("recruiter")) {
                 isRecruiter = true;
                 break;
-            } else if (grantedAuthority.getAuthority().equals("applicant")) {
-                isApplicant = true;
-                break;
             }
         }
-
-        if (isRecruiter) {
-            return "/list-applications";
-        } else if (isApplicant) {
-            return "/apply";
-        } else {
-            throw new IllegalStateException();
-        }
+        return isRecruiter;
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request) {
