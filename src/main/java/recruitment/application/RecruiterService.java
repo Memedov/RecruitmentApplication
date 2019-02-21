@@ -101,13 +101,17 @@ public class RecruiterService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Person person = personRepo.getPersonByUsername(username);
+        if (person == null)
+            throw new UsernameNotFoundException("UsernameNotFoundException");
+
+        System.out.println("person is not null");
         int roleId = person.getRole();
-        String roleName = recruiterRepo.findRoleById(roleId);
+        String roleName = recruiterRepo.getRoleById(roleId);
 
         Set<GrantedAuthority> grantedAuthoritySet = new HashSet<>();
         grantedAuthoritySet.add(new SimpleGrantedAuthority(roleName));
-
         return new User(person.getName(),person.getPassword(),grantedAuthoritySet);
+
     }
 
     /**
