@@ -10,13 +10,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * This class handles denied HTTP requests for failed authorizations.
+ */
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
+    /**
+     * Handles denied accesses by redirecting a user to previous page based
+     * on what authority you have.
+     *
+     * @param request The request that resulted in an AccessDeniedException.
+     * @param response The response so that the user agent can be advised of the failure.
+     * @param exc The exception that caused the invocation.
+     * @throws IOException
+     */
     @Override
     public void handle(
             HttpServletRequest request,
             HttpServletResponse response,
-            AccessDeniedException exc) throws IOException, ServletException {
+            AccessDeniedException exc) throws IOException {
         boolean isRecruiter = false;
         Authentication authentication
                 = SecurityContextHolder.getContext().getAuthentication();
