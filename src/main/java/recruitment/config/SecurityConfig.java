@@ -2,7 +2,6 @@ package recruitment.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,11 +40,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * A bean for successful authentications.
+     *
+     * @return The instance of MySimpleUrlAuthenticationSuccessHandler.
+     */
     @Bean
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
             return new MySimpleUrlAuthenticationSuccessHandler();
     }
 
+    /**
+     * A bean for denied HTTP requests.
+     *
+     * @return The instance of CustomAccessDeniedHandler.
+     */
     @Bean
     public AccessDeniedHandler accessDeniedHandler(){
         return new CustomAccessDeniedHandler();
