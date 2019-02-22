@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -76,7 +75,9 @@ public class RecruiterService implements UserDetailsService {
      * @param password User's password.
      */
     public void registerUser(String fname, String lname, String email, String ssn, String username, String password) {
-        recruiterRepo.registerUser(fname, lname, ssn, email, passwordEncoder.encode(password), 2, username);
+        Person person = new Person(fname, lname, ssn, email,
+                username, passwordEncoder.encode(password), 2);
+        personRepo.save(person);
     }
 
     /**
@@ -99,13 +100,18 @@ public class RecruiterService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Person person = personRepo.findByUsername(username);
-        String roleName = recruiterRepo.findRoleById(person.getRole());
+        Person person = personRepo.getPersonByUsername(username);
+        if (person == null)
+            throw new UsernameNotFoundException("UsernameNotFoundException");
+
+        System.out.println("person is not null");
+        int roleId = person.getRole();
+        String roleName = recruiterRepo.getRoleById(roleId);
 
         Set<GrantedAuthority> grantedAuthoritySet = new HashSet<>();
         grantedAuthoritySet.add(new SimpleGrantedAuthority(roleName));
-
         return new User(person.getName(),person.getPassword(),grantedAuthoritySet);
+
     }
 
     /**
@@ -116,7 +122,7 @@ public class RecruiterService implements UserDetailsService {
     public PersonDTO getAuthenticatedUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            return personRepo.findByUsername(authentication.getName());
+            return personRepo.getPersonByUsername(authentication.getName());
         }
         return null;
     }

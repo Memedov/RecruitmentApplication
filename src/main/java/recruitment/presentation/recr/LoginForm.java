@@ -8,7 +8,6 @@ import javax.validation.constraints.NotEmpty;
  * A form bean for the login form.
  */
 class LoginForm {
-
     @NotEmpty
     @NotBlank(message = "Please submit your username.")
     private String username;

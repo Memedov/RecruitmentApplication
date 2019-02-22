@@ -1,11 +1,11 @@
 package recruitment.presentation.recr;
 
 import recruitment.util.Util;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  * A form bean for the register form.
@@ -25,8 +25,8 @@ class RegisterForm {
     @NotBlank(message = "Please fill in your email address.")
     private String email;
 
-    @DateTimeFormat(pattern = "YY/MM/DD")
     @NotEmpty
+    @Size(min = 13, max = 13, message = "Social security number needs 13 characters: YYYYMMDD-NNNN.")
     @NotBlank(message = "Social security number may not be blank.")
     private String ssn;
 

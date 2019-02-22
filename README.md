@@ -6,7 +6,6 @@ Project members:
 * [Nathalie Hedin](https://github.com/nhedi)
 * [Ramiz Memedov](https://github.com/memedov)
 
-
 ## Tools
 The following software development tools are used.
 * Version control (Git)

@@ -1,6 +1,7 @@
 package recruitment.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>This class represents the different roles a person
@@ -14,10 +15,10 @@ public class Role{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME_KEY)
     @SequenceGenerator(name = SEQUENCE_NAME_KEY, sequenceName = "Role_SEQUENCE")
-
     @Column(name = "ROLE_ID")
     private int roleId;
 
+    @NotNull
     @Column(name = "NAME")
     private String name;
 

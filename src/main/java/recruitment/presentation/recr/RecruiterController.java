@@ -40,9 +40,7 @@ public class RecruiterController {
      * @return A response that redirects the browser to the login page.
      */
     @GetMapping(DEFAULT_PAGE_URL)
-    public String showDefaultView() {
-        return "redirect:" + LOGIN_PAGE_URL;
-    }
+    public String showDefaultView() { return "redirect:" + LOGIN_PAGE_URL; }
 
     /**
      * A GET request for the registration page.
@@ -51,18 +49,16 @@ public class RecruiterController {
      * @return The registration page.
      */
     @GetMapping("/" + REGISTER_PAGE_URL)
-    public String showRegisterPageView(RegisterForm registerForm) {
-        return REGISTER_PAGE_URL;
-    }
+    public String showRegisterPageView(RegisterForm registerForm) { return REGISTER_PAGE_URL; }
 
     /**
      * A GET request for the login page.
-     *
      * @param model Model objects used by the login page.
      * @return The login page.
      */
     @GetMapping("/" + LOGIN_PAGE_URL)
-    public String showLoginPageView(Model model) { return showLoginPage(model, new LoginForm()); }
+    public String showLoginPageView(Model model) {
+        return showLoginPage(model, new LoginForm()); }
 
     private String showLoginPage(Model model, LoginForm loginForm) {
         if(loginForm != null) {
@@ -70,7 +66,6 @@ public class RecruiterController {
         }
         return LOGIN_PAGE_URL;
     }
-
     /**
      * A GET request for the apply page.
      *
@@ -144,26 +139,26 @@ public class RecruiterController {
         return REGISTER_PAGE_URL;
     }
 
-    /**
-     *  The login form has been submitted.
-     *
-     * @param loginForm Content of the login form.
-     * @param bindingResult Validation result for the login form.
-     * @param model Model objects used by the login page.
-     * @return The appropriate page depending on role or login page if unsuccessful authentication.
-     */
-    @PostMapping("/" + LOGIN_PAGE_URL)
-    public String sendLogin(@Valid LoginForm loginForm, BindingResult bindingResult, Model model) {
-        if(!bindingResult.hasErrors()) {
-            //If an applicant logs in
-            if(service.authorize(loginForm.getUsername(), loginForm.getPassword()) == 2) {
-                return APPLY_PAGE_URL;
-            }
-            //If a recruiter logs in
-            else if(service.authorize(loginForm.getUsername(), loginForm.getPassword()) == 1) {
-                return LIST_APPLICATIONS_PAGE_URL;
-            }
-        }
+//    /**
+//     *  The login form has been submitted.
+//     *
+//     * @param loginForm Content of the login form.
+//     * @param bindingResult Validation result for the login form.
+//     * @param model Model objects used by the login page.
+//     * @return The appropriate page depending on role or login page if unsuccessful authentication.
+//     */
+//    @PostMapping("/" + LOGIN_PAGE_URL)
+//    public String sendLogin(@Valid LoginForm loginForm, BindingResult bindingResult, Model model) {
+//        if(!bindingResult.hasErrors()) {
+//            //If an applicant logs in
+//            if(service.authorize(loginForm.getUsername(), loginForm.getPassword()) == 2) {
+//                return APPLY_PAGE_URL;
+//            }
+//            //If a recruiter logs in
+//            else if(service.authorize(loginForm.getUsername(), loginForm.getPassword()) == 1) {
+//                return LIST_APPLICATIONS_PAGE_URL;
+//            }
+//        }
 
         /*else {
             if (service.checkUsername(loginForm.getUsername()) == false) {
@@ -180,10 +175,8 @@ public class RecruiterController {
             model.addAttribute(ExceptionHandlers.ERROR_INFO_KEY, ExceptionHandlers.NO_CONVERSION_FOUND_FOR_UPDATE_INFO);
             return ExceptionHandlers.ERROR_PAGE_URL;
         }*/
-
-        return LOGIN_PAGE_URL;
-        //return showLoginPage(model, loginForm);
-    }
+//        return LOGIN_PAGE_URL;
+//    }
 
     private boolean existAuthenticatedUser(Model model){
         PersonDTO person = service.getAuthenticatedUsername();

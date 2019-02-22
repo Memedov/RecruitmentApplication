@@ -11,15 +11,15 @@
 
     <section>
         <h1>Login Form</h1>
-        <p class="info">Please select currency details</p><br>
-        <form method="post" th:action="@{http://localhost:8080/login}" th:object="${loginForm}">
+        <p class="info">Please enter your credentials</p><br>
+        <form method="post" th:action="@{/login}" th:object="${loginForm}">
             Username:<br>
             <input type="text" th:field="*{username}">
-            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
             <br><br>
             Password:<br>
             <input type="password" th:field="*{password}">
-            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+            <br>
+            <p th:if="${param.error}">Invalid username or password, try again!</p>
             <br><br>
             <input type="submit" value="Login">
             <a href="/register">If you don't have an account, please create one.</a>

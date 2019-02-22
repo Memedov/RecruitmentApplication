@@ -21,7 +21,7 @@ public interface PersonRepository extends JpaRepository<Person, String> {
      * @return The person entity.
      */
     @Query(value = "SELECT * FROM Person WHERE username = ?", nativeQuery = true)
-    Person findByUsername(String username);
+    Person getPersonByUsername(String username);
 
     @Override
     Person save(Person person);
