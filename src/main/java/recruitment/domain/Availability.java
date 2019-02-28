@@ -39,7 +39,8 @@ public class Availability{
     @Column(name = "TO_DATE")
     private Date toDate;
 
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable=false)
     private Person person;
 
     public void setPerson(Person person){ this.person = person;}

@@ -33,17 +33,22 @@ public class CompetenceProfile{
     @Column(name = "YEARS_OF_EXPERIENCE")
     private BigDecimal experience;
 
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable=false)
     private Person person;
 
     public void setPerson(Person person){ this.person = person;}
     public Person getPerson() {return person;}
 
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "competence_id", nullable=false)
+    private Competence competence;
+
+    /*@OneToMany
     private CompetenceProfile cp;
 
     public void setCP(CompetenceProfile cp){ this.cp = cp;}
-    public CompetenceProfile getCP() {return cp;}
+    public CompetenceProfile getCP() {return cp;}*/
 
 
     /**

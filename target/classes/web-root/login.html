@@ -19,7 +19,7 @@
             Password:<br>
             <input type="password" th:field="*{password}">
             <br>
-            <p th:if="${param.error}">Invalid username or password, try again!</p>
+            <p th:if="${param.error}"><br>Invalid username or password, try again!</p>
             <br><br>
             <input type="submit" value="Login">
             <a href="/register">If you don't have an account, please create one.</a>
