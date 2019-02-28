@@ -7,6 +7,7 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.sql.*;
+import javax.persistence.OneToMany;
 
 /**
  * <p>This class represents availabilities connected to specified persons.</p>
@@ -37,6 +38,14 @@ public class Availability{
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @Column(name = "TO_DATE")
     private Date toDate;
+
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable=false)
+    private Person person;
+
+    public void setPerson(Person person){ this.person = person;}
+    public Person getPerson() {return person;}
+
 
     /**
      * Creates a new instance of an availability for a certain person.

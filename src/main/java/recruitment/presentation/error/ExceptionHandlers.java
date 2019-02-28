@@ -25,10 +25,6 @@ public class ExceptionHandlers implements ErrorController {
     public static final String ERROR_INFO_KEY = "errorInfo";
     public static final String GENERIC_ERROR = "Operation Failed";
     public static final String GENERIC_ERROR_INFO = "Sorry, it didn't work. Please try again.";
-    public static final String NO_CONVERSION_FOUND = "No Conversion Found";
-    public static final String NO_CONVERSION_FOUND_INFO = "This conversion could not be computed.";
-    public static final String NO_CONVERSION_FOUND_FOR_UPDATE = "No ";
-    public static final String NO_CONVERSION_FOUND_FOR_UPDATE_INFO = "This conversion update could not be completed.";
     public static final String HTTP_404 = "The page could not be found";
     public static final String HTTP_404_INFO = "Sorry, but there is no such page. We would like to fix this error, please tell us what you where trying to do.";
     static final String ERROR_PATH = "failure";

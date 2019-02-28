@@ -2,6 +2,8 @@ package recruitment.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <p>This class represents the different roles a person
@@ -21,6 +23,10 @@ public class Role{
     @NotNull
     @Column(name = "NAME")
     private String name;
+
+    @OneToMany(mappedBy = "role")
+    private Set<Person> person = new HashSet<>();
+    //private Person person;
 
     /**
      * Creates an instance of a role, based on given parameters.
