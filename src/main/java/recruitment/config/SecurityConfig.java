@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Spring utilizes this method to set the userDetailsService and password encoder to the
      * authentication manager builder to the database.
+     *
      * @param auth
      * @throws Exception
      */
@@ -62,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Configuration of rules for different HTTP requests.
+     *
      * @param http
      * @throws Exception
      */
@@ -89,6 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Bean to encode passwords through BCrypt in the application.
+     *
      * @return The password encoder.
      */
     @Bean

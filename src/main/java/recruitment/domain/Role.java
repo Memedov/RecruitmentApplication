@@ -21,7 +21,7 @@ public class Role{
     private int roleId;
 
     @NotNull
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String name;
 
     @OneToMany(mappedBy = "role")
@@ -41,5 +41,9 @@ public class Role{
 
     protected Role() {
 
+    }
+
+    public String getName(){
+        return this.name;
     }
 }

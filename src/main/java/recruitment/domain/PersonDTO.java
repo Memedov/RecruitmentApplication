@@ -8,12 +8,17 @@ public interface PersonDTO {
     /**
      * Returns an integer specifying a role.
      */
-    int getRole();
+    Role getRole();
 
     /**
      * Returns the first name of a person.
      */
-    String getName();
+    String getFirstName();
+
+    /**
+     * Returns the username of a user.
+     */
+    String getUsername();
 
     /**
      * Returns the password of a user.

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import recruitment.domain.Person;
 import org.springframework.security.core.userdetails.User;
 import recruitment.domain.PersonDTO;
+import recruitment.domain.Role;
 import recruitment.repository.RecruiterRepository;
 import recruitment.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,10 +75,10 @@ public class RecruiterService implements UserDetailsService {
      * @param username User's username.
      * @param password User's password.
      */
-    public void registerUser(String fname, String lname, String email, String ssn, String username, String password) {
+    public PersonDTO registerUser(String fname, String lname, String email, String ssn, String username, String password) {
         Person person = new Person(fname, lname, ssn, email,
-                username, passwordEncoder.encode(password), 2);
-        personRepo.save(person);
+                username, passwordEncoder.encode(password), recruiterRepo.getRoleById(2));
+        return personRepo.save(person);
     }
 
     /**
@@ -104,13 +105,12 @@ public class RecruiterService implements UserDetailsService {
         if (person == null)
             throw new UsernameNotFoundException("UsernameNotFoundException");
 
-        System.out.println("person is not null");
-        int roleId = person.getRole();
-        String roleName = recruiterRepo.getRoleById(roleId);
+        Role role = person.getRole();
+        String roleName = role.getName();
 
         Set<GrantedAuthority> grantedAuthoritySet = new HashSet<>();
         grantedAuthoritySet.add(new SimpleGrantedAuthority(roleName));
-        return new User(person.getName(),person.getPassword(),grantedAuthoritySet);
+        return new User(person.getUsername(),person.getPassword(),grantedAuthoritySet);
 
     }
 
@@ -122,7 +122,8 @@ public class RecruiterService implements UserDetailsService {
     public PersonDTO getAuthenticatedUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            return personRepo.getPersonByUsername(authentication.getName());
+            User user = (User) authentication.getPrincipal();
+            return personRepo.getPersonByUsername(user.getUsername());
         }
         return null;
     }

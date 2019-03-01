@@ -5,6 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.persistence.OneToMany;
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,15 +32,15 @@ public class Person implements PersonDTO {
     private String surname;
 
     @Size(min = 11, max = 13, message = "Social security number needs to be exactly 13 characters.")
-    @Column(name = "SSN")
+    @Column(name = "SSN", unique = true)
     private String ssn;
 
     @Email
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", unique = true)
     private String email;
 
     @NotNull
-    @Column(name = "USERNAME")
+    @Column(name = "USERNAME", unique = true)
     private String username;
 
     @NotNull
@@ -47,10 +48,8 @@ public class Person implements PersonDTO {
     private String password;
 
     @NotNull
-    @Column(name = "ROLE_ID")
-    private int roleId;
-
     @ManyToOne
+    @JoinColumn(name = "fk_roleId")
     private Role role;
 
     @OneToMany
@@ -70,17 +69,17 @@ public class Person implements PersonDTO {
      * @param email The email address.
      * @param username The username.
      * @param password The password.
-     * @param roleId The role identifier.
+     * @param role The role identifier.
      */
     public Person(String name, String surname, String ssn, String email,
-                  String username, String password, int roleId) {
+                  String username, String password, Role role) {
         this.name = name;
         this.surname = surname;
         this.ssn = ssn;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.roleId = roleId;
+        this.role = role;
     }
 
     protected Person() {
@@ -89,13 +88,18 @@ public class Person implements PersonDTO {
     public void setRole(Role role) {this.role = role;}
 
     @Override
-    public int getRole() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
     @Override
-    public String getName() {
+    public String getFirstName() {
         return name;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
     }
 
     @Override
