@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import recruitment.domain.PersonDTO;
 import recruitment.domain.Role;
 
 import java.sql.*;
@@ -19,11 +20,12 @@ public interface RecruiterRepository extends JpaRepository<Role, String> {
 
     /**
      * Finds a role given a certain identifier.
+     *
      * @param id The identifier.
-     * @return The name of the role.
+     * @return the role.
      */
-    @Query(value = "SELECT NAME FROM ROLE WHERE ROLE_ID = ?", nativeQuery = true)
-    String getRoleById(int id);
+    @Query(value = "SELECT * FROM ROLE WHERE ROLE_ID = ?", nativeQuery = true)
+    Role getRoleById(int id);
 
     /**
      * Checks if a username exists in database.
@@ -64,7 +66,7 @@ public interface RecruiterRepository extends JpaRepository<Role, String> {
      */
     @Modifying
     @Query(value = "INSERT INTO PERSON (NAME, SURNAME, SSN, EMAIL, PASSWORD, ROLE_ID, USERNAME) VALUES (?, ?, ?, ?, ?, ?, ?)", nativeQuery = true)
-    void registerUser (String fname, String lname, String ssn, String email, String password, int roleId, String username);
+    PersonDTO registerUser (String fname, String lname, String ssn, String email, String password, int roleId, String username);
 
     /**
      * Authorizes a user at login.

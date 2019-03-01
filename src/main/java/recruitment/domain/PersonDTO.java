@@ -8,7 +8,7 @@ public interface PersonDTO {
     /**
      * Returns an integer specifying a role.
      */
-    int getRole();
+    Role getRole();
 
     /**
      * Returns the first name of a person.

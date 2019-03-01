@@ -44,13 +44,6 @@ public class CompetenceProfile{
     @JoinColumn(name = "competence_id", nullable=false)
     private Competence competence;
 
-    /*@OneToMany
-    private CompetenceProfile cp;
-
-    public void setCP(CompetenceProfile cp){ this.cp = cp;}
-    public CompetenceProfile getCP() {return cp;}*/
-
-
     /**
      * Creates an instance of a competence profile based on given parameters.
      *

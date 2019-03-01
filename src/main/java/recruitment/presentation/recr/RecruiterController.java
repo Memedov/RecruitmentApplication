@@ -12,6 +12,7 @@ import javax.validation.Valid;
 
 import recruitment.application.RecruiterService;
 import recruitment.domain.PersonDTO;
+import recruitment.presentation.error.ExceptionHandlers;
 
 /**
  * Handles all HTTP requests to context root.
@@ -28,11 +29,12 @@ public class RecruiterController {
     private static final String CURRENT_REG_OBJ_NAME = "currentRegistration";
     private static final String REGISTER_FORM_OBJ_NAME = "registerForm";
     private static final String LOGIN_FORM_OBJ_NAME = "loginForm";
+    private static final String CURRENT_PERSON_OBJ_NAME = "username";
 
 
     @Autowired
     private RecruiterService service;
-    //private PersonDTO currentRole;
+    private PersonDTO currentPerson;
 
     /**
      * No page is specified, redirected to the login page.
@@ -75,8 +77,12 @@ public class RecruiterController {
     @GetMapping("/" + APPLY_PAGE_URL)
     public String showApplyPageView(Model model) {
         if(!existAuthenticatedUser(model)){
+            System.out.println(" * * * ** * * * * **  * ** * * * *  * NO AUTHENTICATED USER * * * * ");
+            model.addAttribute(CURRENT_PERSON_OBJ_NAME, currentPerson);
             return LOGIN_PAGE_URL;
         }
+        System.out.println(" * * * ** * * * * **  * ** * * * *  * YES AUTHENTICATED USER * * * * ");
+        model.addAttribute(CURRENT_PERSON_OBJ_NAME, currentPerson.getName());
         return APPLY_PAGE_URL;
     }
 
@@ -111,11 +117,15 @@ public class RecruiterController {
 
             } else {
                 
-                service.registerUser(registerForm.getFname(), registerForm.getLname(), registerForm.getEmail(),
+                currentPerson = service.registerUser(registerForm.getFname(), registerForm.getLname(), registerForm.getEmail(),
                             registerForm.getSsn(), registerForm.getUsername(), registerForm.getPassword());
 
                 LoginForm loginForm = new LoginForm();
                 loginForm.setUsername(registerForm.getUsername());
+
+                if(currentPerson != null){
+                    model.addAttribute(CURRENT_PERSON_OBJ_NAME, currentPerson.getName());
+                }
 
                 return showLoginPage(model, loginForm);
             }
@@ -123,6 +133,7 @@ public class RecruiterController {
         } else {
 
             if (service.checkUsername(registerForm.getUsername()) == true) {
+                System.out.println("****************same username***************************** K E K E ");
                 bindingResult.rejectValue("username", null, "There is already an account registered with that username");
             }
             if (service.checkEmail(registerForm.getEmail()) == true) {
@@ -139,44 +150,47 @@ public class RecruiterController {
         return REGISTER_PAGE_URL;
     }
 
-//    /**
-//     *  The login form has been submitted.
-//     *
-//     * @param loginForm Content of the login form.
-//     * @param bindingResult Validation result for the login form.
-//     * @param model Model objects used by the login page.
-//     * @return The appropriate page depending on role or login page if unsuccessful authentication.
-//     */
-//    @PostMapping("/" + LOGIN_PAGE_URL)
-//    public String sendLogin(@Valid LoginForm loginForm, BindingResult bindingResult, Model model) {
-//        if(!bindingResult.hasErrors()) {
-//            //If an applicant logs in
-//            if(service.authorize(loginForm.getUsername(), loginForm.getPassword()) == 2) {
-//                return APPLY_PAGE_URL;
-//            }
-//            //If a recruiter logs in
-//            else if(service.authorize(loginForm.getUsername(), loginForm.getPassword()) == 1) {
-//                return LIST_APPLICATIONS_PAGE_URL;
-//            }
+            /**
+             *  The login form has been submitted.
+             *
+             * @param loginForm Content of the login form.
+             * @param bindingResult Validation result for the login form.
+             * @param model Model objects used by the login page.
+             * @return The appropriate page depending on role or login page if unsuccessful authentication.
+             */
+            @PostMapping("/" + LOGIN_PAGE_URL)
+            public String sendLogin(@Valid LoginForm loginForm, BindingResult bindingResult, Model model) {
+                if(!bindingResult.hasErrors()) {
+                    if(currentPerson != null){
+                        model.addAttribute(CURRENT_PERSON_OBJ_NAME, currentPerson.getName());
+                    }
+////                    //If an applicant logs in
+////                    if(service.authorize(loginForm.getUsername(), loginForm.getPassword()) == 2) {
+////                        return APPLY_PAGE_URL;
+////                    }
+////                    //If a recruiter logs in
+////                    else if(service.authorize(loginForm.getUsername(), loginForm.getPassword()) == 1) {
+////                        return LIST_APPLICATIONS_PAGE_URL;
+////                    }
+//                } else {
+//                    if (service.checkUsername(loginForm.getUsername()) == false) {
+//                        bindingResult.rejectValue("username", null, "Username or password is incorrect.");
+//                    }
+//                }
+//                if (bindingResult.hasErrors()) {
+//                    model.addAttribute(CURRENT_REG_OBJ_NAME, new LoginForm());
+//                    return LOGIN_PAGE_URL;
+                }
+
+//       if (currentPerson == null) {
+//            model.addAttribute(ExceptionHandlers.ERROR_TYPE_KEY, ExceptionHandlers.NO_CONVERSION_FOUND_FOR_UPDATE);
+//            model.addAttribute(ExceptionHandlers.ERROR_INFO_KEY, ExceptionHandlers.NO_CONVERSION_FOUND_FOR_UPDATE_INFO);
+//            return ExceptionHandlers.ERROR_PAGE_URL;
 //        }
 
-        /*else {
-            if (service.checkUsername(loginForm.getUsername()) == false) {
-                bindingResult.rejectValue("username", null, "Username or password is incorrect.");
-            }
-        }
-       if (bindingResult.hasErrors()) {
-            model.addAttribute(CURRENT_REG_OBJ_NAME, new RegisterForm());
-            return LOGIN_PAGE_URL;
-        }
 
-       if (currentConv == null) {
-            model.addAttribute(ExceptionHandlers.ERROR_TYPE_KEY, ExceptionHandlers.NO_CONVERSION_FOUND_FOR_UPDATE);
-            model.addAttribute(ExceptionHandlers.ERROR_INFO_KEY, ExceptionHandlers.NO_CONVERSION_FOUND_FOR_UPDATE_INFO);
-            return ExceptionHandlers.ERROR_PAGE_URL;
-        }*/
-//        return LOGIN_PAGE_URL;
-//    }
+                return LOGIN_PAGE_URL;
+            }
 
     private boolean existAuthenticatedUser(Model model){
         PersonDTO person = service.getAuthenticatedUsername();

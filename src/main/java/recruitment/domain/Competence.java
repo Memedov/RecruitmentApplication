@@ -20,7 +20,7 @@ public class Competence {
     private int competenceId;
 
     @NotNull
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String name;
 
     @OneToMany
