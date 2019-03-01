@@ -20,3 +20,6 @@ The following frameworks are used.
 * Spring Web MVC
 * Thymeleaf
 * Spring Data (Commons and JPA)
+
+## For developers
+This readme gives a general overview of the application. For developers who will take over the development of this application please see [this file](CONTRIBUTING.md) where also a customer requirements specification and a description of different use cases can be found.
