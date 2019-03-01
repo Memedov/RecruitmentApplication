@@ -78,7 +78,6 @@ public class RecruiterService implements UserDetailsService {
     public PersonDTO registerUser(String fname, String lname, String email, String ssn, String username, String password) {
         Person person = new Person(fname, lname, ssn, email,
                 username, passwordEncoder.encode(password), recruiterRepo.getRoleById(2));
-        System.out.println("************ IN REGISTERUSER *********************");
         return personRepo.save(person);
     }
 
@@ -90,7 +89,6 @@ public class RecruiterService implements UserDetailsService {
      * @return The role id of the specific user.
      */
     public int authorize(String username, String password) {
-        System.out.println("************ IN AUTHORIZE **  *** ** **** **** *** ***");
         return recruiterRepo.authorize(username, password);
     }
 
@@ -107,13 +105,12 @@ public class RecruiterService implements UserDetailsService {
         if (person == null)
             throw new UsernameNotFoundException("UsernameNotFoundException");
 
-        System.out.println("person is not null");
         Role role = person.getRole();
         String roleName = role.getName();
 
         Set<GrantedAuthority> grantedAuthoritySet = new HashSet<>();
         grantedAuthoritySet.add(new SimpleGrantedAuthority(roleName));
-        return new User(person.getName(),person.getPassword(),grantedAuthoritySet);
+        return new User(person.getUsername(),person.getPassword(),grantedAuthoritySet);
 
     }
 
@@ -125,7 +122,8 @@ public class RecruiterService implements UserDetailsService {
     public PersonDTO getAuthenticatedUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            return personRepo.getPersonByUsername(authentication.getName());
+            User user = (User) authentication.getPrincipal();
+            return personRepo.getPersonByUsername(user.getUsername());
         }
         return null;
     }

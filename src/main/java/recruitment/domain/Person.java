@@ -5,6 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.persistence.OneToMany;
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,10 +46,6 @@ public class Person implements PersonDTO {
     @NotNull
     @Column(name = "PASSWORD")
     private String password;
-
-    /*@NotNull
-    @Column(name = "ROLE_ID")
-    private int role;*/
 
     @NotNull
     @ManyToOne
@@ -96,8 +93,13 @@ public class Person implements PersonDTO {
     }
 
     @Override
-    public String getName() {
+    public String getFirstName() {
         return name;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
     }
 
     @Override
