@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 
 import recruitment.application.RecruiterService;
+import recruitment.domain.IllegalActionException;
 import recruitment.domain.PersonDTO;
+import recruitment.presentation.error.ExceptionHandlers;
+
+import java.sql.SQLException;
 
 /**
  * Handles all HTTP requests to context root.
@@ -104,7 +108,13 @@ public class RecruiterController {
      * @return The login page if successful registration, else the register page.
      */
     @PostMapping("/" + REGISTER_PAGE_URL)
-    public String sendRegistration(@Valid RegisterForm registerForm, BindingResult bindingResult, Model model) {
+    public String sendRegistration(@Valid RegisterForm registerForm, BindingResult bindingResult, Model model) throws IllegalActionException, SQLException {
+//        if (true) {
+//            model.addAttribute(ExceptionHandlers.ERROR_TYPE_KEY, ExceptionHandlers.GENERIC_ERROR);
+//            model.addAttribute(ExceptionHandlers.ERROR_INFO_KEY, ExceptionHandlers.GENERIC_ERROR_INFO);
+//            return ExceptionHandlers.ERROR_PAGE_URL;
+//        }
+
         if(!bindingResult.hasErrors()) {
 
             if (!registerForm.getPassword().equals(registerForm.getConfirmPwd())) {
@@ -116,6 +126,12 @@ public class RecruiterController {
 
                 LoginForm loginForm = new LoginForm();
                 loginForm.setUsername(registerForm.getUsername());
+
+                if (currentPerson == null) {
+                    model.addAttribute(ExceptionHandlers.ERROR_TYPE_KEY, ExceptionHandlers.GENERIC_ERROR);
+                    model.addAttribute(ExceptionHandlers.ERROR_INFO_KEY, ExceptionHandlers.GENERIC_ERROR_INFO);
+                    return ExceptionHandlers.ERROR_PAGE_URL;
+                }
 
                 return showLoginPage(model, loginForm);
             }
@@ -139,7 +155,7 @@ public class RecruiterController {
         return REGISTER_PAGE_URL;
     }
 
-    private boolean existAuthenticatedUser(Model model){
+    private boolean existAuthenticatedUser(Model model) {
         PersonDTO person = service.getAuthenticatedUsername();
         if(person == null){
             return false;

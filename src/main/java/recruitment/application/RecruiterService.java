@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import recruitment.domain.IllegalActionException;
 import recruitment.domain.Person;
 import org.springframework.security.core.userdetails.User;
 import recruitment.domain.PersonDTO;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,7 +47,9 @@ public class RecruiterService implements UserDetailsService {
      * @param username The given username to check for.
      * @return true if username already exists, else false.
      */
-    public boolean checkUsername(String username) { return recruiterRepo.checkUsername(username); }
+    public boolean checkUsername(String username) throws SQLException {
+        return recruiterRepo.checkUsername(username);
+    }
 
     /**
      * Checks if an email exists in database.
@@ -53,7 +57,7 @@ public class RecruiterService implements UserDetailsService {
      * @param email The email to check for.
      * @return true if email already exists, otherwise false.
      */
-    public boolean checkEmail(String email) { return recruiterRepo.checkEmail(email); }
+    public boolean checkEmail(String email) throws SQLException { return recruiterRepo.checkEmail(email); }
 
     /**
      * Checks if social security number exists in database.
@@ -61,7 +65,7 @@ public class RecruiterService implements UserDetailsService {
      * @param ssn The ssn to check for.
      * @return true if ssn already exists, otherwise false.
      */
-    public boolean checkSsn(String ssn) {
+    public boolean checkSsn(String ssn) throws SQLException {
         return recruiterRepo.checkSsn(ssn);
     }
 
@@ -75,21 +79,12 @@ public class RecruiterService implements UserDetailsService {
      * @param username User's username.
      * @param password User's password.
      */
-    public PersonDTO registerUser(String fname, String lname, String email, String ssn, String username, String password) {
+    public PersonDTO registerUser(String fname, String lname, String email, String ssn, String username, String password) throws IllegalActionException {
         Person person = new Person(fname, lname, ssn, email,
                 username, passwordEncoder.encode(password), recruiterRepo.getRoleById(2));
+        if (person == null)
+            throw new IllegalActionException("Could not register, try again!");
         return personRepo.save(person);
-    }
-
-    /**
-     * Authorizes a user at login.
-     *
-     * @param username The user's username.
-     * @param password The user's password.
-     * @return The role id of the specific user.
-     */
-    public int authorize(String username, String password) {
-        return recruiterRepo.authorize(username, password);
     }
 
     /**
