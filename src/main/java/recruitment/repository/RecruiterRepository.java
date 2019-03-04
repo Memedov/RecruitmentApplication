@@ -8,9 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import recruitment.domain.PersonDTO;
 import recruitment.domain.Role;
 
-import java.sql.*;
-import java.math.*;
-
 /**
  * Contains all database operations concerning users on the application.
  */

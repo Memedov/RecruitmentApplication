@@ -109,7 +109,6 @@ public class RecruiterController {
 
             if (!registerForm.getPassword().equals(registerForm.getConfirmPwd())) {
                 bindingResult.rejectValue("confirmPwd", null, "Passwords do not match, try again.");
-
             } else {
                 
                 currentPerson = service.registerUser(registerForm.getFname(), registerForm.getLname(), registerForm.getEmail(),
@@ -118,17 +117,12 @@ public class RecruiterController {
                 LoginForm loginForm = new LoginForm();
                 loginForm.setUsername(registerForm.getUsername());
 
-                if(currentPerson != null){
-                    model.addAttribute(CURRENT_PERSON_OBJ_NAME, currentPerson.getFirstName());
-                }
-
                 return showLoginPage(model, loginForm);
             }
 
         } else {
 
             if (service.checkUsername(registerForm.getUsername()) == true) {
-                System.out.println("****************same username***************************** K E K E ");
                 bindingResult.rejectValue("username", null, "There is already an account registered with that username");
             }
             if (service.checkEmail(registerForm.getEmail()) == true) {
@@ -150,7 +144,7 @@ public class RecruiterController {
         if(person == null){
             return false;
         }
-        model.addAttribute("username", person.getFirstName());
+        model.addAttribute("firstname", person.getFirstName());
         return true;
     }
 }
