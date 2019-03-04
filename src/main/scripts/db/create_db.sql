@@ -1,6 +1,6 @@
--- Assumes the database already exists, preferably PostgreSQL.
+-- Assumes the database already exists, preferably Postgres.
 -- Create such a database before running this script.
--- Connect to PostgreSQL by logging in to your A2 Hosting account using SSH.
+-- Connect to Postgres by logging in to your account using SSH.
 -- At the command line type:
 -- 'psql DBNAME USERNAME' (Where you replace DBNAME and USERNAME with your credentials).
 -- At the Password prompt, type the database user's password.
