@@ -45,15 +45,18 @@ public class MySimpleUrlAuthenticationSuccessHandler
     }
 
     protected String determineTargetUrl(Authentication authentication) {
+        String targetURL;
         boolean isRecruiter = false;
         isRecruiter = isRecruiter(isRecruiter, authentication);
         if (isRecruiter) {
-            return "/list-applications";
+            targetURL = "/list-applications";
         } else if (!isRecruiter) {
-            return "/apply";
+            targetURL = "/apply";
         } else {
-            throw new IllegalStateException();
+//            throw new IllegalStateException();
+            targetURL = "/error";
         }
+        return targetURL;
     }
 
     /**
