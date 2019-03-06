@@ -2,6 +2,8 @@ package recruitment.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <p>This class represents the different competences a person can have.</p>
@@ -18,8 +20,12 @@ public class Competence {
     private int competenceId;
 
     @NotNull
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String name;
+
+    @OneToMany
+    private Set<CompetenceProfile> competenceProfiles = new HashSet<>();
+    //private CompetenceProfile competenceProfile;
 
     /**
      * Creates an instance of a competence, from the specified name.

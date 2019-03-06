@@ -4,6 +4,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import recruitment.domain.IllegalActionException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         } else if (!isRecruiter) {
             response.sendRedirect(request.getContextPath() + "/apply");
         } else {
+            response.sendRedirect(request.getContextPath() + "/error");
             throw new IllegalStateException();
         }
     }

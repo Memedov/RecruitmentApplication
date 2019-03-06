@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 
 import recruitment.application.RecruiterService;
+import recruitment.domain.IllegalActionException;
 import recruitment.domain.PersonDTO;
+import recruitment.presentation.error.ExceptionHandlers;
+
+import java.sql.SQLException;
 
 /**
  * Handles all HTTP requests to context root.
@@ -28,11 +32,12 @@ public class RecruiterController {
     private static final String CURRENT_REG_OBJ_NAME = "currentRegistration";
     private static final String REGISTER_FORM_OBJ_NAME = "registerForm";
     private static final String LOGIN_FORM_OBJ_NAME = "loginForm";
+    private static final String CURRENT_PERSON_OBJ_NAME = "username";
 
 
     @Autowired
     private RecruiterService service;
-    //private PersonDTO currentRole;
+    private PersonDTO currentPerson;
 
     /**
      * No page is specified, redirected to the login page.
@@ -73,7 +78,7 @@ public class RecruiterController {
      * @return the apply page.
      */
     @GetMapping("/" + APPLY_PAGE_URL)
-    public String showApplyPageView(Model model) {
+    public String showApplyPageView(Model model) throws Exception{
         if(!existAuthenticatedUser(model)){
             return LOGIN_PAGE_URL;
         }
@@ -87,7 +92,7 @@ public class RecruiterController {
      * @return The ListApplications page.
      */
     @GetMapping("/" + LIST_APPLICATIONS_PAGE_URL)
-    public String showListApplicationsPageView(Model model) {
+    public String showListApplicationsPageView(Model model) throws Exception {
         if(!existAuthenticatedUser(model)){
             return LOGIN_PAGE_URL;
         }
@@ -104,86 +109,46 @@ public class RecruiterController {
      */
     @PostMapping("/" + REGISTER_PAGE_URL)
     public String sendRegistration(@Valid RegisterForm registerForm, BindingResult bindingResult, Model model) {
+
         if(!bindingResult.hasErrors()) {
+                try{
+                    currentPerson = service.registerUser(registerForm.getFname(), registerForm.getLname(), registerForm.getEmail(),
+                            registerForm.getSsn(), registerForm.getUsername(), registerForm.getPassword(), registerForm.getConfirmPwd());
+                }
+                catch (IllegalActionException iae){
+                    System.out.println(iae.getMessage());
+                    if(iae.getMessage().toUpperCase().contains("USERNAME"))
+                        bindingResult.rejectValue("username", null, "There is already an account registered with that username");
+                    if(iae.getMessage().toUpperCase().contains("EMAIL"))
+                        bindingResult.rejectValue("email", null, "There is already an account registered with that email");
+                    if(iae.getMessage().toUpperCase().contains("SSN"))
+                        bindingResult.rejectValue("ssn", null, "There is already an account registered with that social security number");
+                    if(iae.getMessage().toUpperCase().contains("PASSWORD"))
+                        bindingResult.rejectValue("confirmPwd", null, "Passwords do not match, try again.");
+                    return REGISTER_PAGE_URL;
+                }
 
-            if (!registerForm.getPassword().equals(registerForm.getConfirmPwd())) {
-                bindingResult.rejectValue("confirmPwd", null, "Passwords do not match, try again.");
-
-            } else {
-                
-                service.registerUser(registerForm.getFname(), registerForm.getLname(), registerForm.getEmail(),
-                            registerForm.getSsn(), registerForm.getUsername(), registerForm.getPassword());
+                if (currentPerson == null) {
+                    model.addAttribute(ExceptionHandlers.ERROR_TYPE_KEY, ExceptionHandlers.GENERIC_ERROR);
+                    model.addAttribute(ExceptionHandlers.ERROR_INFO_KEY, ExceptionHandlers.GENERIC_ERROR_INFO);
+                    return ExceptionHandlers.ERROR_PAGE_URL;
+                }
 
                 LoginForm loginForm = new LoginForm();
                 loginForm.setUsername(registerForm.getUsername());
 
                 return showLoginPage(model, loginForm);
-            }
-
-        } else {
-
-            if (service.checkUsername(registerForm.getUsername()) == true) {
-                bindingResult.rejectValue("username", null, "There is already an account registered with that username");
-            }
-            if (service.checkEmail(registerForm.getEmail()) == true) {
-                bindingResult.rejectValue("email", null, "There is already an account registered with that email");
-            }
-            if (service.checkSsn(registerForm.getSsn()) == true) {
-                bindingResult.rejectValue("ssn", null, "There is already an account registered with that social security number");
-            }
-            if (!registerForm.getPassword().equals(registerForm.getConfirmPwd())) {
-                bindingResult.rejectValue("confirmPwd", null, "Passwords do not match, try again.");
-            }
         }
 
         return REGISTER_PAGE_URL;
     }
 
-//    /**
-//     *  The login form has been submitted.
-//     *
-//     * @param loginForm Content of the login form.
-//     * @param bindingResult Validation result for the login form.
-//     * @param model Model objects used by the login page.
-//     * @return The appropriate page depending on role or login page if unsuccessful authentication.
-//     */
-//    @PostMapping("/" + LOGIN_PAGE_URL)
-//    public String sendLogin(@Valid LoginForm loginForm, BindingResult bindingResult, Model model) {
-//        if(!bindingResult.hasErrors()) {
-//            //If an applicant logs in
-//            if(service.authorize(loginForm.getUsername(), loginForm.getPassword()) == 2) {
-//                return APPLY_PAGE_URL;
-//            }
-//            //If a recruiter logs in
-//            else if(service.authorize(loginForm.getUsername(), loginForm.getPassword()) == 1) {
-//                return LIST_APPLICATIONS_PAGE_URL;
-//            }
-//        }
-
-        /*else {
-            if (service.checkUsername(loginForm.getUsername()) == false) {
-                bindingResult.rejectValue("username", null, "Username or password is incorrect.");
-            }
-        }
-       if (bindingResult.hasErrors()) {
-            model.addAttribute(CURRENT_REG_OBJ_NAME, new RegisterForm());
-            return LOGIN_PAGE_URL;
-        }
-
-       if (currentConv == null) {
-            model.addAttribute(ExceptionHandlers.ERROR_TYPE_KEY, ExceptionHandlers.NO_CONVERSION_FOUND_FOR_UPDATE);
-            model.addAttribute(ExceptionHandlers.ERROR_INFO_KEY, ExceptionHandlers.NO_CONVERSION_FOUND_FOR_UPDATE_INFO);
-            return ExceptionHandlers.ERROR_PAGE_URL;
-        }*/
-//        return LOGIN_PAGE_URL;
-//    }
-
-    private boolean existAuthenticatedUser(Model model){
+    private boolean existAuthenticatedUser(Model model) throws Exception {
         PersonDTO person = service.getAuthenticatedUsername();
-        if(person == null){
-            return false;
+        if(person != null){
+            model.addAttribute("firstname", person.getFirstName());
+            return true;
         }
-        model.addAttribute("username", person.getName());
-        return true;
+        return false;
     }
 }

@@ -1,5 +1,6 @@
 package recruitment.repository;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,8 +18,8 @@ public interface PersonRepository extends JpaRepository<Person, String> {
     /**
      * Returns the person, or user, with the specified username or null if no such user exists.
      *
-     * @param username The specified username.
-     * @return The person entity.
+     * @param username
+     * @throws DataAccessException
      */
     @Query(value = "SELECT * FROM Person WHERE username = ?", nativeQuery = true)
     Person getPersonByUsername(String username);
