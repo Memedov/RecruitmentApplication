@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,34 +41,6 @@ public class RecruiterService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     /**
-     * Checks if a username exists in database.
-     *
-     * @param username The given username to check for.
-     * @return true if username already exists, else false.
-     */
-    public boolean checkUsername(String username) throws SQLException {
-        return recruiterRepo.checkUsername(username);
-    }
-
-    /**
-     * Checks if an email exists in database.
-     *
-     * @param email The email to check for.
-     * @return true if email already exists, otherwise false.
-     */
-    public boolean checkEmail(String email) throws SQLException { return recruiterRepo.checkEmail(email); }
-
-    /**
-     * Checks if social security number exists in database.
-     *
-     * @param ssn The ssn to check for.
-     * @return true if ssn already exists, otherwise false.
-     */
-    public boolean checkSsn(String ssn) throws SQLException {
-        return recruiterRepo.checkSsn(ssn);
-    }
-
-    /**
      * Registers a user, by creating an instance in the database.
      *
      * @param fname User's first name.
@@ -79,11 +50,22 @@ public class RecruiterService implements UserDetailsService {
      * @param username User's username.
      * @param password User's password.
      */
-    public PersonDTO registerUser(String fname, String lname, String email, String ssn, String username, String password) throws IllegalActionException {
+    public PersonDTO registerUser(String fname, String lname, String email, String ssn, String username, String password, String cnfrmpwd) throws IllegalActionException {
+        StringBuilder message = new StringBuilder("msg:");
+        if(recruiterRepo.checkUsername(username) != null)
+            message.append("USERNAME");
+        if(recruiterRepo.checkEmail(email) != null)
+            message.append("EMAIL");
+        if(recruiterRepo.checkSsn(ssn) != null)
+            message.append("SSN");
+        if(!password.equals(cnfrmpwd))
+            message.append("PASSWORD");
+        if(message.length() > 4)
+            throw new IllegalActionException(message.toString());
         Person person = new Person(fname, lname, ssn, email,
                 username, passwordEncoder.encode(password), recruiterRepo.getRoleById(2));
         if (person == null)
-            throw new IllegalActionException("Could not register, try again!");
+           return person;
         return personRepo.save(person);
     }
 
@@ -98,7 +80,7 @@ public class RecruiterService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Person person = personRepo.getPersonByUsername(username);
         if (person == null)
-            throw new UsernameNotFoundException("UsernameNotFoundException");
+            throw new UsernameNotFoundException("Could not find a person with username: " + username);
 
         Role role = person.getRole();
         String roleName = role.getName();
@@ -114,12 +96,13 @@ public class RecruiterService implements UserDetailsService {
      *
      * @return The instance of person.
      */
-    public PersonDTO getAuthenticatedUsername() {
+    public PersonDTO getAuthenticatedUsername() throws Exception{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             User user = (User) authentication.getPrincipal();
             return personRepo.getPersonByUsername(user.getUsername());
+        }else{
+            throw new Exception("Could not find an authenticated user");
         }
-        return null;
     }
 }
