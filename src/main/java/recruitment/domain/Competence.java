@@ -25,7 +25,6 @@ public class Competence {
 
     @OneToMany
     private Set<CompetenceProfile> competenceProfiles = new HashSet<>();
-    //private CompetenceProfile competenceProfile;
 
     /**
      * Creates an instance of a competence, from the specified name.

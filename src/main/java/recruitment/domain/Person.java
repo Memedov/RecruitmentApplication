@@ -54,11 +54,9 @@ public class Person implements PersonDTO {
 
     @OneToMany
     private Set<CompetenceProfile> competenceProfiles = new HashSet<>();
-    //private CompetenceProfile competenceProfile;
 
     @OneToMany
     private Set<Availability> availabilities = new HashSet<>();
-    //private Availability availability;
 
     /**
      * Creates an instance of an person specified by given parameters.
