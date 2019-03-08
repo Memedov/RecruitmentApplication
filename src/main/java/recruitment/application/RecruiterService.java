@@ -51,7 +51,7 @@ public class RecruiterService implements UserDetailsService {
      * @param password User's password.
      */
     public PersonDTO registerUser(String fname, String lname, String email, String ssn, String username, String password, String cnfrmpwd) throws IllegalActionException {
-        StringBuilder message = new StringBuilder("msg:");
+        StringBuilder message = new StringBuilder();
         if(recruiterRepo.checkUsername(username) != null)
             message.append("USERNAME");
         if(recruiterRepo.checkEmail(email) != null)
@@ -60,7 +60,7 @@ public class RecruiterService implements UserDetailsService {
             message.append("SSN");
         if(!password.equals(cnfrmpwd))
             message.append("PASSWORD");
-        if(message.length() > 4)
+        if(message.length() > 0)
             throw new IllegalActionException(message.toString());
         Person person = new Person(fname, lname, ssn, email,
                 username, passwordEncoder.encode(password), recruiterRepo.getRoleById(2));
@@ -101,6 +101,7 @@ public class RecruiterService implements UserDetailsService {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             User user = (User) authentication.getPrincipal();
             return personRepo.getPersonByUsername(user.getUsername());
+            //throw new Exception("Could not find an authenticated user");
         }else{
             throw new Exception("Could not find an authenticated user");
         }
