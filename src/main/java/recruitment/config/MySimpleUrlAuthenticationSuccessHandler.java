@@ -53,8 +53,7 @@ public class MySimpleUrlAuthenticationSuccessHandler
         } else if (!isRecruiter) {
             targetURL = "/apply";
         } else {
-//            throw new IllegalStateException();
-            targetURL = "/error";
+           throw new IllegalStateException();
         }
         return targetURL;
     }

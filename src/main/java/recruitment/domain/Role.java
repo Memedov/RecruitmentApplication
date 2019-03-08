@@ -26,7 +26,6 @@ public class Role{
 
     @OneToMany(mappedBy = "role")
     private Set<Person> person = new HashSet<>();
-    //private Person person;
 
     /**
      * Creates an instance of a role, based on given parameters.

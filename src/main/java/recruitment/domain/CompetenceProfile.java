@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
-import javax.persistence.OneToMany;
 
 /**
  * Creates a profile based a persons competences.
