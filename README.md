@@ -1,5 +1,5 @@
 # RecruitmentApplication
-Project for IV1201, KTH, where only functionality required to fulfill the architectural needs will be implemented.
+Project for IV1201, KTH, where only functionality required to fulfill the architectural needs has been implemented.
 
 Project members:
 * [Yuchen Che](https://github.com/YuchenC)
