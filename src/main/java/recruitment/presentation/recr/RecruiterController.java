@@ -15,7 +15,6 @@ import recruitment.domain.IllegalActionException;
 import recruitment.domain.PersonDTO;
 import recruitment.presentation.error.ExceptionHandlers;
 
-import java.sql.SQLException;
 
 /**
  * Handles all HTTP requests to context root.
@@ -29,10 +28,7 @@ public class RecruiterController {
     static final String APPLY_PAGE_URL = "apply";
     static final String LIST_APPLICATIONS_PAGE_URL = "list-applications";
 
-    private static final String CURRENT_REG_OBJ_NAME = "currentRegistration";
-    private static final String REGISTER_FORM_OBJ_NAME = "registerForm";
     private static final String LOGIN_FORM_OBJ_NAME = "loginForm";
-    private static final String CURRENT_PERSON_OBJ_NAME = "username";
 
 
     @Autowired
